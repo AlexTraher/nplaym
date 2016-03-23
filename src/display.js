@@ -1,5 +1,5 @@
 import { HEIGHT, WIDTH, LEFTWALL, RIGHTWALL, MIDWIDTH, MIDHEIGHT, FPS, FRAMERATE, DIFFICULTY, STARTTIME, PLAYERLINE } from './constants.js';
-import { SCORE, checkIntersects, checkBullet, gameState, player } from './game.js';
+import { SCORE, checkIntersects, checkBullet, gameState, player, bulletCount } from './game.js';
 import { npmOutput } from './io.js';
 import colors from 'colors';
 import term from './terminal.js';
@@ -22,6 +22,12 @@ function paintScreen () {
       const scoreTxt = `Score: ${SCORE}`;
       term.write(scoreTxt);
       term.left(scoreTxt.length);
+    }
+
+    if (line === 3) {
+      var bulletTxt = `bullet ${bulletCount}`;
+      term.write(bulletTxt);
+      term.left(bulletTxt.length);
     }
 
     term.nl();
@@ -61,12 +67,12 @@ function startSequence (startGameFn) {
   // TODO: Sort out this callback cancer
   for (let i = 0; i < MIDWIDTH + 1; i++) {
     setTimeout(function () {
-      let str = ' '.repeat(i) + '>'.blue;
+      let str = ' '.repeat(i) + '>'.green;
       term.write(str);
       term.left(str.length)
 
       if (i === MIDWIDTH) {
-        str = ' '.repeat(i) + '^'.blue;
+        str = ' '.repeat(i) + '^'.green;
         for (let j = 0; j < PLAYERLINE; j++) {
           setTimeout(function () {
             term.clearLine().nl().write(str)

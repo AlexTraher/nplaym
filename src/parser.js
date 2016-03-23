@@ -21,19 +21,18 @@ Parser.set = function (terms) {
 }
 
 Parser.parse = function (d) {
+  const bits = d.toString().match(/[a-zA-Z0-9\-_]+/)
   switch (setting) {
     case 'npmInstall':
-      const bits = d.toString().match(/:[a-zA-Z0-9\-_]+/)
       if (bits) {
-        const packName = bits[0].slice(1);
+        const packName = bits[0].slice(0);
         return packName;
       }
       return util.getRandom(args);
     break;
     case 'npmInstallSomething':
-      const bits = d.toString().match(/:[a-zA-Z0-9\-_]+/)
       if (bits) {
-        const packName = bits[0].slice(1);
+        const packName = bits[0].slice(0);
         return packName;
       }
       return args;

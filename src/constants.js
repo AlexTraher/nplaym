@@ -9,7 +9,7 @@ const FRAMERATE = ~~(1000 / FPS);
 const DIFFICULTY = 50; // out of 100
 const STARTTIME = new Date().getTime();
 const PLAYERLINE = ~~(HEIGHT / 4 + HEIGHT / 2);
-
+const BULLET_COUNT = 15;
 export { HEIGHT,
   WIDTH,
   LEFTWALL,
@@ -20,5 +20,6 @@ export { HEIGHT,
   FRAMERATE,
   DIFFICULTY,
   STARTTIME,
-  PLAYERLINE 
+  PLAYERLINE,
+  BULLET_COUNT
 };

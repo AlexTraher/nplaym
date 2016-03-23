@@ -1,19 +1,20 @@
-import { HEIGHT, WIDTH, LEFTWALL, RIGHTWALL, MIDWIDTH, MIDHEIGHT, FPS, FRAMERATE, DIFFICULTY, STARTTIME, PLAYERLINE } from './constants.js';
+import { HEIGHT, WIDTH, LEFTWALL, RIGHTWALL, MIDWIDTH, MIDHEIGHT, FPS, FRAMERATE, DIFFICULTY, STARTTIME, PLAYERLINE, BULLET_COUNT } from './constants.js';
 import term from './terminal.js';
 import { Monster, Bullet } from './classes.js';
 import { writeCentre, paintScreen, startSequence } from './display.js';
 import { installingPackages } from './io.js';
 
-let SCORE = 0; 
+let SCORE = 0;
 let ALIVE = true;
 let LOOP;
+let bulletCount = BULLET_COUNT;
 
 const gameState = [{
   type: 'player',
   s: '^',
   up: PLAYERLINE,
   left: MIDWIDTH,
-  colour: 'blue'
+  colour: 'green'
 }];
 
 const player = gameState[0];
@@ -84,7 +85,10 @@ function startGame () {
 }
 
 function fire () {
-  gameState.push(new Bullet(player.left));
+  if (bulletCount > 0) {
+    bulletCount--;
+    gameState.push(new Bullet(player.left));
+  }
 }
 
 function runLoop () {
@@ -95,4 +99,4 @@ function runLoop () {
   }
 };
 
-export { gameState, checkIntersects, checkBullet, SCORE, addScore, startGame, fire, player, gameOver };
+export { gameState, checkIntersects, checkBullet, SCORE, addScore, startGame, fire, player, gameOver, bulletCount };
