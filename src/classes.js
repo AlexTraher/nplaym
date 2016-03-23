@@ -77,4 +77,33 @@ function Bullet (xCoord) {
   }
 }
 
-export { Monster, Bullet };
+function Powerup () {
+  this.type = 'powerup';
+
+  //TODO - move this to maybe util? 
+  this.getPlacement = () => {
+    let randomStart = ~~(Math.random() * (WIDTH - RIGHTWALL - LEFTWALL));
+    randomStart = Math.min(randomStart, WIDTH -2);
+    randomStart = Math.max(randomStart, 0);
+    return randomStart;
+  }
+
+  this.left = this.getPlacement();
+  this.dangerZone = [this.left, this.left + 1, this.left + 2];
+  this.s = '==';
+  this.colour = 'magenta';
+  this.dead = false;
+  this.up = 0;
+  this.tick = () => {
+    this.up = this.up + 1;
+    if (this.dead) {
+      this.remove();
+    }
+  }
+  
+  this.remove = () => {
+    gameState.splice(gameState.indexOf(this), 1);
+  }
+}
+
+export { Monster, Bullet, Powerup };

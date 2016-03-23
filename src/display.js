@@ -1,5 +1,5 @@
 import { HEIGHT, WIDTH, LEFTWALL, RIGHTWALL, MIDWIDTH, MIDHEIGHT, FPS, FRAMERATE, DIFFICULTY, STARTTIME, PLAYERLINE } from './constants.js';
-import { SCORE, checkIntersects, checkBullet, gameState, player, bulletCount } from './game.js';
+import { SCORE, checkIntersects, checkBullet, checkPowerup, gameState, player, bulletCount } from './game.js';
 import { npmOutput } from './io.js';
 import colors from 'colors';
 import term from './terminal.js';
@@ -33,7 +33,7 @@ function paintScreen () {
     term.nl();
   }
 
-  gameState.filter(item => item.type === 'bullet' || item.type === 'mob')
+  gameState.filter(item => item.type === 'bullet' || item.type === 'mob' || item.type === 'powerup')
     .forEach(item => {
       item.tick();
     })
@@ -53,7 +53,8 @@ function paintMovers (line) {
     })
     checkBullet(line, entities);
     if (line === PLAYERLINE) {
-      checkIntersects(line, entities)
+      checkIntersects(line, entities);
+      checkPowerup(line, entities);
     }
   }
 }

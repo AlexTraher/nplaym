@@ -1,6 +1,6 @@
 import { HEIGHT, WIDTH, LEFTWALL, RIGHTWALL, MIDWIDTH, MIDHEIGHT, FPS, FRAMERATE, DIFFICULTY, STARTTIME, PLAYERLINE, BULLET_COUNT } from './constants.js';
 import term from './terminal.js';
-import { Monster, Bullet } from './classes.js';
+import { Monster, Bullet, Powerup } from './classes.js';
 import { writeCentre, paintScreen, startSequence } from './display.js';
 import { installingPackages } from './io.js';
 
@@ -50,6 +50,19 @@ function checkIntersects (line, entities) {
   });
 }
 
+function checkPowerup (line, entities) {
+  const playerPos = entities.find(item => item.type === 'player').left;
+  const powerups = entities.filter(i => i.type === 'powerup');
+  const dangerZone = [];
+  powerups.forEach(powerup => {
+    if (intersects(playerPos, powerup.dangerZone) && !powerup.dead) {
+      powerup.dead = true;
+      //full powerup of bullets
+      bulletCount += BULLET_COUNT;
+    }
+  });
+}
+
 function gameOver (win) {
   if (win) {
     writeCentre(`You win! Packages installed! Your score was ${SCORE}.`);
@@ -71,6 +84,11 @@ function generateScene () {
   if (packages.length > 0 && (Math.random() * 100) < DIFFICULTY) {
     const lastMsg = packages.pop();
     gameState.push(new Monster(lastMsg));
+  }
+
+  //Less powerups if on a higher difficulty
+  if ((Math.random() * 60) > DIFFICULTY) {
+    gameState.push(new Powerup());
   }
 }
 
@@ -99,4 +117,4 @@ function runLoop () {
   }
 };
 
-export { gameState, checkIntersects, checkBullet, SCORE, addScore, startGame, fire, player, gameOver, bulletCount };
+export { gameState, checkIntersects, checkBullet, checkPowerup,  SCORE, addScore, startGame, fire, player, gameOver, bulletCount };
